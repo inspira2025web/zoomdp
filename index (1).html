@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile Picture Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a00e0;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 25px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: #4a00e0;
+            outline: none;
+        }
+        
+        .btn {
+            background: #4a00e0;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #3a00b0;
+        }
+        
+        .result-container {
+            display: none;
+            text-align: center;
+            padding: 25px;
+        }
+        
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #f0f0f0;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .download-btn {
+            background: #00c853;
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: #009624;
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: #4a00e0;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 42px;
+            color: #4a00e0;
+        }
+        
+        .success-message {
+            color: #2e7d32;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .info-box p {
+            margin: 5px 0;
+            color: #0d47a1;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Student Profile Picture Generator</h1>
+            <p>Download your profile picture for Zoom</p>
+        </div>
+        
+        <div id="login-container">
+            <div class="form-container">
+                <div class="logo">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                
+                <div class="input-group">
+                    <label for="index-number"><i class="fas fa-id-card"></i> Index Number</label>
+                    <input type="text" id="index-number" placeholder="Enter your index number">
+                </div>
+                
+                <div class="input-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                
+                <button class="btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Get My Picture</button>
+                
+                <div id="error-message" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i> Invalid index number or password. Please try again.
+                </div>
+                
+                <div class="info-box">
+                    <p><i class="fas fa-info-circle"></i> Enter your Index Number and Password to retrieve your profile picture.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="result-container" class="result-container">
+            <div class="logo">
+                <i class="fas fa-check-circle" style="color: #00c853;"></i>
+            </div>
+            
+            <img id="profile-pic" class="profile-pic" src="" alt="Profile Picture">
+            <h2 id="welcome-message">Welcome, Student!</h2>
+            <p>Your profile picture is ready for download.</p>
+            
+            <div id="success-message" class="success-message">
+                <i class="fas fa-check"></i> Picture downloaded successfully!
+            </div>
+            
+            <a id="download-link" class="download-btn" href="#" download>
+                <i class="fas fa-download"></i> Download Picture
+            </a>
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Login</button>
+        </div>
+    </div>
+
+    <script>
+        async function login() {
+            const indexNumber = document.getElementById('index-number').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            errorMessage.style.display = 'none';
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ indexNumber, password })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('welcome-message').textContent = `Welcome, ${indexNumber}!`;
+                
+                if (result.image) {
+                    document.getElementById('profile-pic').src = result.image;
+                    const downloadLink = document.getElementById('download-link');
+                    downloadLink.href = result.image;
+                    downloadLink.download = `${indexNumber}_profile_picture.jpg`;
+                    downloadLink.onclick = function() {
+                        document.getElementById('success-message').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('success-message').style.display = 'none';
+                        }, 3000);
+                    };
+                } else {
+                    document.getElementById('profile-pic').src = "https://via.placeholder.com/200?text=No+Photo";
+                }
+
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('result-container').style.display = 'block';
+            } else {
+                errorMessage.textContent = "Invalid index number or password. Please try again.";
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function goBack() {
+            document.getElementById('index-number').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('result-container').style.display = 'none';
+        }
+
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });  
+    </script>
+</body>
+</html>
